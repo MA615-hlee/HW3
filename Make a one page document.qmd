@@ -1,0 +1,38 @@
+---
+title: "Make a one page document"
+format: 
+  html:
+    embed-resources: true
+editor: visual
+---
+
+# Make a one page document you can show in class.
+
+## Objective
+
+Graphical visualization of data is an essential skill for statisticians. By this time, you have plotted data by hand, with the built-in graphics in Base R, and with ggplot2. And you know how to make simple documents in Quarto that combine R code and formatted text.
+
+```{r}
+library(ggplot2)
+library(dplyr)
+head(infert)
+```
+
+For this exercise, I'm going to use the case and the age variables from the `infert` dataset.
+
+I will try to make a simple one page document that shows a box plot comparing the age distribution between cases and controls in the infertility study.
+
+```{r}
+infert_data <- infert %>%
+  mutate(case_status = ifelse(case == 1, "Case", "Control"))
+
+ggplot(infert_data, aes(x = case_status, y = age, fill = case_status)) +
+  geom_boxplot(alpha = 0.7) +
+  labs(
+    title = "Age Distribution in Infertility Study",
+    x = "Group Status",
+    y = "Age in Years"
+  ) 
+```
+
+Based on the box plot, we can draw a straightforward conclusion. The entire box for the case group, which represents the middle 50% of the women in that group, is shifted slightly higher than the box for the control group, which means the ages where slightly higher in the case group. However the median for both cases seems almost the same. Therefore we can conclude that there is no significant difference in age between the two groups.
